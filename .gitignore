@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/StarMax_BackEnd/bin/Debug/net7.0
+/StarMax_BackEnd/obj
+/StarMax_FrontEnd/obj/Debug
+/dbdata
+/.vs
+/StarMax_FrontEnd/.vs
+/StarMax_FrontEnd/.vscode
+/StarMax_BackEnd/StarMax_BackEnd.csproj.user
+/StarMax_FrontEnd/StarMax_FrontEnd.esproj.user

@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - '1433:1433'
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "LongPassword12345"
+      MSSQL_SCRIPT_PATH: "/init.sql"
+    volumes:
+      - ./dbdata:/var/opt/mssql/data
+
+      #- ./init.sql:/script/init.sql
+    #command: >
+    #  bash -c "
+    #    set -m
+    #    /opt/mssql/bin/sqlservr &
+    #    until /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'LongPassword12345' -d master -i /script/init.sql; do
+    #      sleep 1
+    #    done
+    #    fg"
+
+  #backend:
+  #  build:
+  #    context: ./StarMax_BackEnd
+  #    dockerfile: Dockerfile.backend.dev
+  #  ports:
+  #    - '7080:80'
+  #  depends_on:
+  #    - db
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - ConnectionStrings__DefaultConnection=Server=db,1433;Database=master;User=sa;Password=LongPassword12345;
+  #  volumes:
+  #    - ./StarMax_BackEnd:/app
+  #    - ~/.nuget/packages:/root/.nuget/packages
+
+  #frontend:
+  #  build:
+  #    context: ./StarMax_FrontEnd
+  #    dockerfile: Dockerfile.frontend.dev
+  #  ports:
+  #    - '3000:3000'
+  #  depends_on:
+  #    - backend
+  #  environment:
+  #    - REACT_APP_API_BASE_URL=http://backend:5000
+  #  volumes:
+  #    - ./StarMax_FrontEnd:/app 
+  #    - node_modules_volume:/app/node_modules
+
+volumes:  
+  node_modules_volume:
+

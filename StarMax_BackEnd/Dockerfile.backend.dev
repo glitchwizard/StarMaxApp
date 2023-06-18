@@ -1,0 +1,38 @@
+# Base image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+
+# Set the working directory
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+
+WORKDIR /src
+
+# Copy and restore dependencies
+COPY *.csproj .
+RUN dotnet restore
+
+# Install Entity Framework Core CLI
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+# Copy the source code
+COPY . .
+
+# Build the application in Debug configuration
+RUN dotnet build -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish -c Release -o /app
+
+CMD ["dotnet", "run", "--urls", "http://*:80"]
+
+# Set environment variables
+ENV ASPNETCORE_URLS=http://+:80
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "app.dll"]
