@@ -16,12 +16,21 @@ const StarshipCard = ({ starship, onDeleted}) => {
     };
 
     return (
-        <Card sx={{border: '1px solid black', m: 2, p: 4}}>
-            <Grid container spacing={2}>
-                <Grid item xs={6} sm={6}>
+        <Card 
+            sx={{
+                border: '1px solid black', 
+                m: 1, 
+                p: 2, 
+                backgroundColor: 'lightgray'
+            }}
+            height='100%'
+                >
+            <Grid container spacing={2} justifyContent='center' alignItems='stretch'>
+                <Grid item xs={12} sm={12}>
                     <CardContent sx={{
-                        border: '1px solid gray',
+                        border: '5px solid #f6f6f6',
                         borderRadius: '20px',
+                        backgroundColor: '#f3f3f3',
                     }}>
                         <Typography variant="h5" component="div">
                             {starship.name}
@@ -74,7 +83,7 @@ const StarshipCard = ({ starship, onDeleted}) => {
                     </CardContent>
                 </Grid>
                 <Grid item xs={6} sm={6}>
-                    <Button sx={{ mx: 1 }} variant="contained" color="primary" onClick={handleOpenEdit}>
+                    <Button sx={{ m: 1 }} variant="contained" color="secondary" onClick={handleOpenEdit}>
                         Edit
                     </Button>
                     <Dialog open={openEdit} onClose={handleCloseEdit}>
