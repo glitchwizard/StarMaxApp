@@ -5,6 +5,7 @@ VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBA81D33-ABC6-48A5-83E1-EF5F1EB7B54A}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		docker-compose.yml = docker-compose.yml
 		init.sql = init.sql
 		Makefile = Makefile

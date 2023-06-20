@@ -3,6 +3,9 @@ start: ## Start the docker containers
 	@docker-compose up
 	@echo "Containers started - http://localhost:3000"
 
+start-db: ## start just the database
+	@docker-compose up -d db
+
 stop: ## Stop Containers
 	@docker-compose down
 
