@@ -24,11 +24,13 @@ This is a website for a used starship dealership. It allows users to view the cu
 4. Visual Studio (NOT VS Code!) should open at the end of the the init sequence
 5. Click the dropdown on the Start button in Visual Studio and select `Configure Startup Projects`
 
-![Dropdown Menu Example](https://i.imgur.com/g1tazWH.png)(https://imgur.com/a/rZBZP1F)
+![Dropdown Menu Example](https://i.imgur.com/g1tazWH.png)
+(https://imgur.com/a/rZBZP1F)
 
 6. Select `Multiple startup projects:` and set the action to `Start` for both.
 
-![Configure Startup Projects example](https://i.imgur.com/7O9Ff7K.png)(https://imgur.com/a/UbqzUYM)
+![Configure Startup Projects example](https://i.imgur.com/7O9Ff7K.png)
+(https://imgur.com/a/UbqzUYM)
 
 7. Click `Apply`, then `OK`, closing the dialog box.
 
