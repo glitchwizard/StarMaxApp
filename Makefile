@@ -1,3 +1,15 @@
+init:## all in one command to get you up and running
+	@echo "Starting the docker MSSQL database"
+	@make start-db
+	@echo "Building the backend"
+	@cd StarMax_BackEnd && dotnet restore
+	@echo "npm installing the frontend"
+	@cd StarMax_FrontEnd && npm install
+	@echo "Running migrations to bring DB up to date with models"
+	@cd StarMax_BackEnd && dotnet ef database 
+	@echo "Open the solution to start the app"
+	@cmd /C start StarMaxApp.sln
+
 start: ## Start the docker containers
 	@echo "Starting the docker containers"
 	@docker-compose up
