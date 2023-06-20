@@ -6,7 +6,7 @@ init:## all in one command to get you up and running
 	@echo "npm installing the frontend"
 	@cd StarMax_FrontEnd && npm install
 	@echo "Running migrations to bring DB up to date with models"
-	@cd StarMax_BackEnd && dotnet ef database 
+	@cd StarMax_BackEnd && dotnet ef database update
 	@echo "Open the solution to start the app"
 	@cmd /C start StarMaxApp.sln
 
