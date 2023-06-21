@@ -1,68 +1,92 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CircularProgress, Box, } from '@mui/material'; 
-import StarshipList from './components/StarshipList';
-import TransparentHeader from './components/Header';
-import SearchBar from './components/SearchBar';
+import { Box } from '@mui/material';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import ShopPage from './pages/ShopPage';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import HyperspaceBackground from './components/HyperspaceBackground';
+import Financing from './pages/Financing';
+
+const imgLinks = [
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXUn4-ZOTsao-PEO_PS6CNSCI87hXLuypqQtLMDZFH61WCJVz2CQAYDm-Jzw&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxXIoQyDcjT9KBWrFinlUOAMt5yDo8tpsPsmtcFLJgkF7WjSmjAQwp2iNqk4g&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyItFfcWSwdw7OnhzpqzzoRKhr7Ixxt1wfdHbzz8aRVnv9zWXhx-JXpv70dg&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTjnzFuyE9aW5b7M4EiJiFkaRRc5xGzmaqWzQsgcWBGUgjz7bBeL-ELX6wgCE&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4-w11MfJCfbGoPbeRnuNfxspxbb4kQj2B8b92bPquNrCsRgVFOB3V4pS5lw&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIPrSDGz1WxXjcOdWGT5X_s0pkUwnw8V_vq404x_tBbWRC59C36i0wCJ-w3kw&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOKGv3bgTjnIokhPG4N5UOhAke6m8gdpqD2qrrI5cDN0dCaPCZkNMiNyXfJFc&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9I72WUiz11eW8qBvgaUSLMeErrYx_4clQ5TqeDMtTVqfKA_It3tlopq2kpHY&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLLF7WZPfsbAbTxFmSQLU_l6ouczhbqUDXRQ16b3IF2dBxYD-0nc8E31O0NQ&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQeWGTDfel-Y8yQ2c9D3CoxJs-JWqcg1IlxWitCkEjc709yeNOQPCAPbm5zKI&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyg2Wo03EAXuYqjlWqpDmD1LTMqt9z41bZZcIhBbptiEGUAuAE-V3gZQVFsg&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScN4efPKlKE__8eegs2xDHMJn2vPiEJIt19s1w0PZ5mM2BFwmKa4-PZRhvKw&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDwKYipTPsYfWxeINyWpJI26KoLwpVjVCpRjQImcuAvclu4t1JIRdJGBrBDw&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE4exjPWmjYtILizD6-vOGAZoPAzu5vEQzw8t-HyQwvjn5PWcKSnoEZpyiN2k&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyKI-t2LLwYpYBTihtEfq7Grv3gz7GoieGW5fgfDG9FxNut5okM7oT2iTp0VM&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-wankr6l5SDjnwucnBAUINkX0OI4DkqlOWb2h5fGap4vaRFuVkNLWLmu0FA&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc2g10vQfIx9fGGl6hPxdLWjrdjcwThimUHMe8HC-LJhwgTFPa4T_zgWUe9g&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmJdHwEtuCWI0x8P_vnjxy5HkraU90tqMwM4G8ja8K4aIX7QKeiFweJqunXQ&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_vlN6K8TJOOmjT6TJflJgfcUfhWO3gs2Wuhv6CxXiMW6c3p-0BhZazgQW9ec&s',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG8rvYAk_VIiD4IoOrby7BO9ixhD_OV5z82HGYCsdzEAMcfqPE6hqWPjP6Ng&s',
+];
 
 const App = () => {
     const [starshipsData, setStarshipsData] = useState({ starships: [], loading: true });
-    const [searchTerm, setSearchTerm] = useState('');
-    let fetchTimeoutId = null
-
-
-
-    const fetchStarships = async () => {
-        try {
-            const response = await axios.get('/api/Starships');
-            if (response.data && response.data.length > 0) {  // Assuming that an empty or missing array indicates no data
-                setStarshipsData({ starships: response.data, loading: false });  // loading is set to false here
-                if (fetchTimeoutId) clearTimeout(fetchTimeoutId);  // Clear the timeout if the data has been successfully fetched
-            } else {
-                if (!fetchTimeoutId) fetchTimeoutId = setTimeout(fetchStarships, 5000);  // Retry after 5 seconds if no data
-            }
-        } catch (error) {
-            console.error(`Error fetching starships: ${error.message}`);
-            if (!fetchTimeoutId) fetchTimeoutId = setTimeout(fetchStarships, 5000);  // Retry after 5 seconds if there was an error
-        }
+  
+    const getRandomImage = (imageArray) => {
+      const randomIndex = Math.floor(Math.random() * imageArray.length);
+      return imageArray[randomIndex];
     };
-
-    useEffect(() => {
-        fetchStarships();
-        // Make sure to clear the timeout when the component is unmounted to prevent memory leaks
-        return () => { if (fetchTimeoutId) clearTimeout(fetchTimeoutId); }
-    });
-
-    const filteredStarships = searchTerm
-    ? starshipsData.starships.filter(
-        (starship) => {
-            return starship.name.toLowerCase().trim().includes(searchTerm.toLowerCase().trim())
+  
+    const fetchStarships = async () => {
+      try {
+        const response = await axios.get('/api/Starships');
+        if (response.data && response.data.length > 0) {
+          const selectedStarships = response.data.map((starship) => ({
+            ...starship,
+            image: getRandomImage(imgLinks),
+          }));
+          setStarshipsData({ starships: selectedStarships, loading: false });
+        } else {
+          setTimeout(fetchStarships, 5000);
         }
-    )        
-    : starshipsData.starships;
-    
+      } catch (error) {
+        console.error(`Error fetching starships: ${error.message}`);
+        setTimeout(fetchStarships, 5000);
+      }
+    };
+  
+    useEffect(() => {
+      document.body.style.backgroundColor = `rgba(0, 0, 0, 0.7)`;
+      fetchStarships();
+    }, []);
+  
     return (
+      <Router>
         <Box>
-            <TransparentHeader />
-            <br />
-            <SearchBar starships={starshipsData.starships} onSearchChange={setSearchTerm} searchTerm={searchTerm}/>            
-            {starshipsData.loading
-                ? <p>
-                    <em>Loading... This will refresh once the ASP.NET backend has started.
-                    </em>
-                    <br />
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'top', height: '100vh' }}>
-                        <CircularProgress />
-                    </div>
-                </p>
-                : (
-                    <StarshipList 
-                    filteredStarships={filteredStarships}
-                    fetchStarships={fetchStarships}
-                    />
-            )}
+          <HyperspaceBackground />
+          <Header />
+          <Routes>
+            <Route
+              path="/"
+              element={<HomePage starships={starshipsData.starships} imgLinks={imgLinks} />}
+            />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/finance" element={<Financing />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route
+              path="/shop"
+              element={<ShopPage starshipsData={starshipsData} fetchStarships={fetchStarships} />}
+            />
+          </Routes>
+          <Footer />
         </Box>
+      </Router>
     );
-}
-
-export default App;
+  };
+  
+  export default App;

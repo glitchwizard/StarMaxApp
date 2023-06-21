@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, MenuItem, Menu, Button } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { styled } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -16,14 +16,17 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" id='AppBarComponent'>
-      <Toolbar>
+    <AppBar position="static" id='AppBarComponent' 
+    sx={{
+    }}
+      >
+      <Toolbar >
         <Typography variant="h3" style={{ flexGrow: 1 }}>
-          STARMAX
+          <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>STARMAX</Link>
         </Typography>
-        <Button color="inherit">Shop</Button>
-        <Button color="inherit">Sell/Trade</Button>
-        <Button color="inherit">Finance</Button>
+        <Button color="inherit" component={Link} to="/shop">Shop</Button>
+        <Button color="inherit" component={Link} to="/shop">Sell/Trade</Button>
+        <Button color="inherit" component={Link} to="/finance">Finance</Button>
         <Button color="inherit" onClick={handleClick}>
           More <ArrowDropDownIcon />
         </Button>
@@ -36,21 +39,12 @@ function Header() {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem onClick={handleClose}>Service & Repairs</MenuItem>
-          <MenuItem onClick={handleClose}>FAQ & Support</MenuItem>
-          <MenuItem onClick={handleClose}>Why StarMax</MenuItem>
-          <MenuItem onClick={handleClose}>Buying Online</MenuItem>
-          <MenuItem onClick={handleClose}>Starship Research & Advice</MenuItem>
-          <MenuItem onClick={handleClose}>Warranties & MaxCare</MenuItem>
-          <MenuItem onClick={handleClose}>Search jobs at StarMax</MenuItem>
+          <MenuItem onClick={handleClose} component={Link} to="/about">About</MenuItem>
+          <MenuItem onClick={handleClose} component={Link} to="/contact">Contact</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
   );
 }
 
-const TransparentHeader = styled(Header)({
-  backgroundColor: 'rgba(0, 0, 0, 0.5)', // black with 80% opacity
-});
-
-export default TransparentHeader;
+export default Header;

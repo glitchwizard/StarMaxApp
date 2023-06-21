@@ -66,7 +66,7 @@ const EditStarshipForm = ({ starship, onFormSubmit }) => {
             if (!isEditMode && (key === 'id' || key === 'url')) {
                 // Skip iteration if 'id' or 'url' key is encountered
             } else {
-                if (formFields[key] === '' && key != 'url') {
+                if (formFields[key] === '' && key !== 'url') {
                     formIsValid = false;
                     formErrors[key] = 'This field is required';
                 }

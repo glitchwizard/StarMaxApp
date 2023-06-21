@@ -21,17 +21,20 @@ const StarshipCard = ({ starship, onDeleted}) => {
                 border: '1px solid black', 
                 m: 1, 
                 p: 2, 
-                backgroundColor: 'lightgray'
+                borderRadius: '15px'
             }}
             height='100%'
                 >
             <Grid container spacing={2} justifyContent='center' alignItems='stretch'>
                 <Grid item xs={12} sm={12}>
-                    <CardContent sx={{
-                        border: '5px solid #f6f6f6',
-                        borderRadius: '20px',
-                        backgroundColor: '#f3f3f3',
-                    }}>
+                    <CardContent 
+                        id='starship-card'
+                        sx={{
+                            border: '5px solid #000000',
+                            borderRadius: '10px',
+                        }}
+                    >
+                        <img src={starship.image} alt={starship.name} style={{ width: '100%', maxHeight: '200px', objectFit: 'cover' }} />
                         <Typography variant="h5" component="div">
                             {starship.name}
                         </Typography>

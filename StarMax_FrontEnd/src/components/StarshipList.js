@@ -38,7 +38,7 @@ const StarshipList = ({ filteredStarships, fetchStarships }) => {
     >
         <Grid item xs={12} textAlign='center'>
             <Button sx={{mx: 2, p: 3}} variant="contained" color="primary" onClick={handleOpenNew}>
-                Create New Starship
+                List A New Starship
             </Button>
         </Grid>
         <Grid item xs={12}>

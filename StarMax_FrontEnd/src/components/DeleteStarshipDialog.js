@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import axios from 'axios';
 
 const DeleteStarshipDialog = ({ starship, onDeleted }) => {
@@ -26,7 +26,7 @@ const DeleteStarshipDialog = ({ starship, onDeleted }) => {
 
     return (
         <React.Fragment>
-            <Button variant="contained" color="warning" onClick={handleClickOpen}>
+            <Button variant="contained" color="error" onClick={handleClickOpen}>
                 Delete
             </Button>
             <Dialog
