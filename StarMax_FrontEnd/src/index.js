@@ -4,7 +4,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-
 const primaryTextColor = '#1Effff'; // Star wars Blue
 
 const theme = createTheme({

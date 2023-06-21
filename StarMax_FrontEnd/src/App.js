@@ -8,8 +8,8 @@ import ContactPage from './pages/ContactPage';
 import ShopPage from './pages/ShopPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import HyperspaceBackground from './components/HyperspaceBackground';
 import Financing from './pages/Financing';
+import './scrollbar.css';
 
 const imgLinks = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXUn4-ZOTsao-PEO_PS6CNSCI87hXLuypqQtLMDZFH61WCJVz2CQAYDm-Jzw&s',
@@ -34,59 +34,55 @@ const imgLinks = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG8rvYAk_VIiD4IoOrby7BO9ixhD_OV5z82HGYCsdzEAMcfqPE6hqWPjP6Ng&s',
 ];
 
+const fetchStarships = async (setStarshipsData, retries = 5) => {
+  if (retries <= 0) return;
+
+  try {
+    const response = await axios.get('/api/Starships');
+    if (response.data && response.data.length > 0) {
+      const selectedStarships = response.data.map((starship) => ({
+        ...starship,
+        image: imgLinks[Math.floor(Math.random() * imgLinks.length)],
+      }));
+      setStarshipsData({ starships: selectedStarships, loading: false });
+    } else {
+      fetchStarships(setStarshipsData, retries - 1);
+    }
+  } catch (error) {
+    console.error(`Error fetching starships: ${error.message}`);
+    fetchStarships(setStarshipsData, retries - 1);
+  }
+};
+
 const App = () => {
-    const [starshipsData, setStarshipsData] = useState({ starships: [], loading: true });
-  
-    const getRandomImage = (imageArray) => {
-      const randomIndex = Math.floor(Math.random() * imageArray.length);
-      return imageArray[randomIndex];
-    };
-  
-    const fetchStarships = async () => {
-      try {
-        const response = await axios.get('/api/Starships');
-        if (response.data && response.data.length > 0) {
-          const selectedStarships = response.data.map((starship) => ({
-            ...starship,
-            image: getRandomImage(imgLinks),
-          }));
-          setStarshipsData({ starships: selectedStarships, loading: false });
-        } else {
-          setTimeout(fetchStarships, 5000);
-        }
-      } catch (error) {
-        console.error(`Error fetching starships: ${error.message}`);
-        setTimeout(fetchStarships, 5000);
-      }
-    };
-  
-    useEffect(() => {
-      document.body.style.backgroundColor = `rgba(0, 0, 0, 0.7)`;
-      fetchStarships();
-    }, []);
-  
-    return (
-      <Router>
-        <Box>
-          <HyperspaceBackground />
-          <Header />
-          <Routes>
-            <Route
-              path="/"
-              element={<HomePage starships={starshipsData.starships} imgLinks={imgLinks} />}
-            />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/finance" element={<Financing />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route
-              path="/shop"
-              element={<ShopPage starshipsData={starshipsData} fetchStarships={fetchStarships} />}
-            />
-          </Routes>
-          <Footer />
-        </Box>
-      </Router>
-    );
-  };
-  
-  export default App;
+  const [starshipsData, setStarshipsData] = useState({ starships: [], loading: true });
+
+  useEffect(() => {
+    document.body.style.backgroundColor = `#111`;
+    fetchStarships(setStarshipsData);
+  }, []);
+
+  return (
+    <Router>
+      <Box>
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage starships={starshipsData.starships} imgLinks={imgLinks} />}
+          />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/finance" element={<Financing />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route
+            path="/shop"
+            element={<ShopPage starshipsData={starshipsData} fetchStarships={() => fetchStarships(setStarshipsData)} />}
+          />
+        </Routes>
+        <Footer />
+      </Box>
+    </Router>
+  );
+};
+
+export default App;

@@ -61,7 +61,7 @@ const EditStarshipForm = ({ starship, onFormSubmit }) => {
     const validateForm = () => {
         let formErrors = {};
         let formIsValid = true;
-        // Here you can add validation rules. For example, we require all fields:
+        // Here you can add validation rules. For example, we require almost all fields:
         for (let key in formFields) {
             if (!isEditMode && (key === 'id' || key === 'url')) {
                 // Skip iteration if 'id' or 'url' key is encountered

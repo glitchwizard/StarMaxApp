@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Dialog, Box, Container, Typography, Grid, Button, Card, CardMedia, CardContent, CardActions } from '@mui/material';
 import { Link } from 'react-router-dom';
 import StarshipCard from '../components/StarshipCard';
 
+const HomePage = ({starships}) => {
 
-const HomePage = ({starships, imgLinks}) => {
-
-  const [starshipsWithImages, setStarshipsWithImages] = useState([]);
   const [openStarship, setOpenStarship] = useState(null);
 
   const handleOpenStarship = (starship) => {
@@ -17,65 +15,52 @@ const HomePage = ({starships, imgLinks}) => {
     setOpenStarship(null);
   };
 
-  const getRandomImage = (imageArray) => {
-    const randomIndex = Math.floor(Math.random() * imageArray.length);
-    return imageArray[randomIndex];
-  };
-  
-  useEffect(() => {
+  const starshipsWithImages = useMemo(() => {
+    if (!starships || starships.length < 4) return [];
 
-    const getRandomStarships = (starships) => {
-      let selectedStarships = [];
-      let indices = [];
-      while (selectedStarships.length < 4) {
-        let randomIndex = Math.floor(Math.random() * starships.length);
-        if (!indices.includes(randomIndex)) {
-          selectedStarships.push(starships[randomIndex]);
-          indices.push(randomIndex);
-        }
+    let indices = [];
+    while (indices.length < 4) {
+      let randomIndex = Math.floor(Math.random() * starships.length);
+      if (!indices.includes(randomIndex)) {
+        indices.push(randomIndex);
       }
-      return selectedStarships;
-    };
-
-    if(starships && starships.length >= 4){
-      const selectedStarships = getRandomStarships(starships);
-      const newStarships = selectedStarships.map(starship => ({
-        ...starship,
-        image: getRandomImage(imgLinks),
-      }));
-      setStarshipsWithImages(newStarships);
     }
+    return indices.map(index => starships[index]);
   }, [starships]);
+
 
   return (
     <Box>
-      <Box color="warning" 
-        sx={{
-          backgroundImage: `url(${'https://www.nasa.gov/sites/default/files/thumbnails/image/main_image_star-forming_region_carina_nircam_final-5mb.jpg'})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          py: 10
-        }}>
-        <Container maxWidth="md" id='topContainer' 
+        <Box color="warning" 
           sx={{
-            bgcolor: 'rgba(0,0,0,0.5)',
-            py: 2,
-            borderRadius: 1,
+            backgroundImage: `url(${'https://www.nasa.gov/sites/default/files/thumbnails/image/web_first_images_release.png'})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            py: 10
           }}>
-          <Box>
-            <Typography variant="h3" >
-              WELCOME TO STARMAX
-            </Typography>
-            <Typography variant="h5" gutterBottom>
-              Discover a starship like no other!
-            </Typography>
-            <Button variant="contained" color="secondary" component={Link} to="/shop" mt={4}>
-              Shop Now
-            </Button>
-          </Box>
-        </Container>
-      </Box>
+          <Container maxWidth="md" id='topContainer' 
+            sx={{
+              bgcolor: 'rgba(0,0,0,0.5)',
+              py: 2,
+              borderRadius: 1,
+            }}>
+            <Box>
+              <Typography variant="h2">
+                WELCOME TO STARMAX
+              </Typography>
+              <Typography variant="h4" gutterBottom>
+                Love Your Starship  Guarantee®
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+              Take 30 Standard Earth days to love it or return it (up to 2 lightyears) 
+              </Typography>
+              <Button variant="contained" color="secondary" component={Link} to="/shop" mt={4}>
+                Shop Now
+              </Button>
+            </Box>
+          </Container>
+        </Box>
       <Container maxWidth="md" sx={{
           borderRadius: 1,
           py: 2
@@ -87,14 +72,15 @@ const HomePage = ({starships, imgLinks}) => {
               py: 2,
               borderRadius: 1,
               m: 1,
-              textAlign: 'center'
+              textAlign: 'center',
+              mb: 3
             }}>
           Featured Starships
         </Typography>
         <Grid container spacing={4}>
           {starshipsWithImages.map((starship, id) => (
             <Grid item xs={12} sm={6} md={3} key={id}>
-              <Card>
+              <Card sx={{ height: '100%' }}>
                 <CardMedia
                   component="img"
                   height="140"
