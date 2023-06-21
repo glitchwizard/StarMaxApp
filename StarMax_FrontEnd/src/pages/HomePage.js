@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Dialog, Box, Container, Typography, Grid, Button, Card, CardMedia, CardContent, CardActions } from '@mui/material';
 import { Link } from 'react-router-dom';
 import StarshipCard from '../components/StarshipCard';
